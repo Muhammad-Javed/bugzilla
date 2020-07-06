@@ -1,0 +1,69 @@
+<div class="container">
+  <div class="row justify-content-md-center">
+    <table class="table">
+      <tr>
+        <th>Project id</th>
+        <th>Projects name</th>
+        <th>Developer</th>
+        <th>QA</th>
+        <th>BUGS</th>
+      </tr>
+      <tr>
+        <td><%= @project.id%></td>
+        <td> <%= @project.name %></td>
+        <td>
+         <% if @dev.present? %>
+           <% @dev.each do |developer| %>
+              <%= developer.name %>
+              <%= link_to "Remove ", remove_project_path(@project.id, user_id: developer.id), method: :delete, data:{confirm:"Are You sure?" } %> <br>
+            <% end %>
+          </td>
+          <% end %>
+          <% if @qa.present?%>
+          <td>
+            <% @qa.each do |sqa| %>
+              <%= sqa.name %>
+              <%= link_to "Remove ", remove_project_path(@project.id, user_id: sqa.id), method: :delete, data:{ confirm:"Are You sure?" } %> <br>
+            <% end %>
+          <% end %>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <th>Name</th><th>Type</th><th>Status</th>
+            </tr>
+            <% @project.bugs.each do |bug|%>
+              <tr>
+                <td><%= bug.title%></td><td><%= bug.bug_type%></td><td><%= bug.status%></td>
+              </tr>
+            <% end %>
+          </table>
+        </td>
+      </tr>
+    </table><br><br>
+    <table class="table">
+      <tr>
+        <th>ID</th>  <th>Name</th>  <th>Developers and QA</th>  <th></th>
+      </tr>
+      <% if @qa_developers.present? %>
+        <% @qa_developers.each do |qa_developer|%>
+          <tr>
+            <td> <%= qa_developer.id %></td>
+            <td> <%= qa_developer.name %></td>
+            <td> <%= qa_developer.type %></td>
+            <td> <%= link_to "Assign to Project",  adds_project_path(@project, user_id: qa_developer.id), method: :post   %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+

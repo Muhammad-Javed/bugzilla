@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div >
+      <h1>All Project</h1>
+    </div>
+    <table class="table">
+      <tr>
+        <th>Project id</th>
+        <th>Projects name</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      <% @projects.each do |project| %>
+        <tr>
+          <td> <%= project.id%></td>
+          <td> <%= project.name %></td>
+          <% if policy(project).update? %>
+            <td><%= link_to "Edit", edit_project_path(project) %></td>
+            <td><%= link_to "Delete", project_path(project.id), method: :delete, data:{ confirm:"Are You sure?" } %></td>
+            <td> <%= link_to "Add QA & Developer", project_path(project.id) %></td>
+          <% end %>
+          <%  if policy(project).add_bug? %>
+            <td> <%= link_to "Report Bugs", add_bug_project_path(project.id) %></td>
+          <% end %>
+          <%  if policy(project).show_bug? %>
+            <td> <%= link_to "Assign Bugs", show_bug_project_path(project.id) %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+    <%  if policy(@projects).create? %>
+      <%= link_to "New Project", new_project_path  %>
+    <% end %>
+  </div>
+</div>
+
+
+
+

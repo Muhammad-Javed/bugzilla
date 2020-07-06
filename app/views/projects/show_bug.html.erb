@@ -1,0 +1,69 @@
+<div class="container">
+  <div class="row">
+    <table class="table">
+      <tr>
+        <th>Project id</th>
+        <th>Projects name</th>
+        <th>BUGS</th>
+        <th></th>
+      </tr>
+      <tr>
+        <td>
+           <%= @project.id%>
+        </td>
+        <td>
+           <%= @project.name %>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th></th>
+              <th></th>
+            </tr>
+            <% @developer_bugs.each do |bug| %>
+              <tr>
+                <td><%= bug.title%></td>
+                <td><%= bug.bug_type%></td>
+                <td><%= bug.status%></td>
+                <td><%= link_to "Mark Resolved",  update_bug_project_path(bug_id: bug.id), method: :post %></td>
+                <td><%= link_to "Remove",  remove_bug_project_path(developer_id: current_user.id, bug_id: bug.id), method: :delete, data:{ confirm:"Are You sure?" } %>
+                </td>
+              </tr>  
+            <% end %>
+          </table>
+        </td>
+      </tr>
+    </table>
+   </div>
+    <div class="row">
+      <table class="table">
+        <tr>
+          <th>BUG ID</th>
+          <th>BUG NAME</th>
+          <th>BUG STATUS</th>
+          <th></th>
+        </tr>
+        <% @unassigned_bugs.each do |bug| %>
+          <tr>
+            <td><%= bug.id %></td>
+            <td><%= bug.title %></td>
+            <td><%= bug.status %></td>
+              <% if policy(@project).assign_bug? %>
+                <td>
+                <%= link_to "Assign Bug",  assign_bug_project_path(developer_id: current_user.id, bug_id: bug.id), method: :post %>
+                </td>
+              <% end %>
+          </tr>
+        <% end %>
+      </table>
+  </div>
+</div>
+
+
+
+
+
+

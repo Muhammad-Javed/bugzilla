@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="row justify-content-md-center">
+    <h1>Projects</h1>
+    <table class="table">
+      <tr>
+        <th>Project id</th>
+        <th>Project name</th>
+        <th>BUGS</th>
+        <th></th>
+      </tr>
+      <tr>
+        <td> <%= @project.id %> </td>
+        <td> <%= @project.name %> </td>
+        <td>
+          <table>
+            <tr>
+              <th>Title</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Creater Name</th>
+            </tr>
+            <% @project.bugs.each do |bug| %>
+              <tr>
+              <td><%= bug.title %></td>
+              <td><%= bug.bug_type %></td>
+              <td><%= bug.status %></td>
+              <td><%= bug.qa.name %></td>
+              <% if policy(bug).destroy? %>
+                <td><%= link_to "Remove", [@project ,bug], method: :delete, data:{ confirm:"Are You sure?" } %></td>
+                <td><%= link_to "Edit", edit_project_bug_path(@project, bug) %></td>
+              <% end %><br>
+              </tr>
+            <% end %>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="row justify-content-md-center" id="addbug">
+    <%= form_with(model: [@project, @project.bugs.build], local: true) do |form| %>
+     <h2>Add New Bug or Feature</h2>
+      <p>
+        <%= form.label :title %><br>
+        <%= form.text_field :title, minlength: 5, maxlength:30, :required => true, :class => "form-controler", :placeholder => "Title"  %>
+      </p>
+      <p>
+        <%= form.label :deadline %><br>
+        <%= form.text_field :deadline , minlength: 5, maxlength:30, :class => "form-controler", :placeholder => "Deadline" %>
+      </p>
+      <p>
+        <%= form.label :type %><br>
+        <%= form.select :bug_type, ['Bug','Feature'], :required => true, :id => "type" %>
+      </p>
+      <p>
+        <%= form.label :status %><br>
+        <%= form.select :status, [ 'New', 'Started', 'Completed'], :required => true, :id => "status" %> </p>
+      <p>
+      <p>
+        <%= form.hidden_field :qa_id, :readonly => true, :id => "qa_id", value:current_user.id  %>
+      </p>
+      <p>
+      <p> <%= form.label :screenshot %><br>
+         <%= form.file_field :screenshot, :class => "btn btn-primary" %>
+      </p>
+       <%= form.submit :class => "btn btn-primary"%>
+      </p>
+    <% end %>
+  </div>
+</div>
+
+
+
+
+
+
+
+
